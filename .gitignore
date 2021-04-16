@@ -1,0 +1,5 @@
+*~
+
+# Exclude large files from dirs
+env/
+data/
