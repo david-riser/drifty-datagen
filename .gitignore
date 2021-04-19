@@ -3,3 +3,4 @@
 # Exclude large files from dirs
 env/
 data/
+services/generator/__pycache__/
