@@ -4,3 +4,6 @@
 env/
 data/
 services/generator/__pycache__/
+services/generator/env/
+services/plotter/__pycache__/
+services/plotter/env/
