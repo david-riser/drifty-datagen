@@ -1,0 +1,17 @@
+generator:
+    n_samples: 100
+    center_x1: 0.0
+    center_y1: 0.0
+    center_x2: 0.5
+    center_y2: 0.5
+    std_x1: 0.25
+    std_y1: 0.25
+    std_x2: 0.25
+    std_y2: 0.25
+    jump_x1: 0.1
+    jump_y1: 0.1
+    jump_x2: 0.1
+    jump_y2: 0.1
+program:
+    output_dir: data/
+    time_interval: 10
