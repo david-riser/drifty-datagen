@@ -1,0 +1,2 @@
+program:
+    monitor_file: ../generator/data/metadata.csv

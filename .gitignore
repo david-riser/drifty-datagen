@@ -1,9 +1,10 @@
 *~
 
 # Exclude large files from dirs
-env/
 data/
 services/generator/__pycache__/
 services/generator/env/
+services/generator/data/
+
 services/plotter/__pycache__/
 services/plotter/env/

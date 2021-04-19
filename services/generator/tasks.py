@@ -10,8 +10,10 @@ required to build the application.
 """
 import pickle
 from datetime import datetime
+from pathlib import Path
 
 import numpy as np
+import pandas as pd
 from prefect import task, Task
 
 import utils
@@ -92,3 +94,43 @@ class Generator(Task):
                     loc=self.centers[label, axis],
                     scale=self.jumps[label,axis]
                 )
+
+
+class MonitorCSVWriter(Task):
+    """ Class to write a monitoring CSV file each time the
+    task graph is executed. """
+    def __init__(self, output_filename):
+        self.output_filename = output_filename
+
+
+    def run(self, features, labels):
+        """ Calculate some aggregate statistics and then
+        squirt them out into the logfile. """
+
+        class_a_indices = np.where(labels == 0)[0]
+        class_a_mean = np.mean(features[class_a_indices], axis=1)
+        class_a_std = np.std(features[class_a_indices], axis=1)
+        n_samples_a = len(class_a_indices)
+
+        class_b_indices = np.where(labels == 1)[0]
+        class_b_mean = np.mean(features[class_b_indices], axis=1)
+        class_b_std = np.std(features[class_b_indices], axis=1)
+        n_samples_b = len(class_b_indices)
+
+        data = {
+            "n_samples_a":n_samples_a, "n_samples_b":n_samples_b,
+            "class_a_mean1":class_a_mean[0], "class_a_mean2":class_a_mean[1],
+            "class_a_std1":class_a_std[0], "class_a_std2":class_a_std[1],
+            "class_b_mean1":class_b_mean[0], "class_b_mean2":class_b_mean[1],
+            "class_b_std1":class_b_std[0], "class_b_std2":class_b_std[1]
+        }
+
+        dataframe = pd.DataFrame([data,])
+
+        out_path = Path(self.output_filename)
+        if not out_path.exists():
+            dataframe.to_csv(self.output_filename, index=False)
+        else:
+            old_dataframe = pd.read_csv(self.output_filename)
+            new_dataframe = pd.concat([dataframe, old_dataframe])
+            new_dataframe.to_csv(self.output_filename, index=False)

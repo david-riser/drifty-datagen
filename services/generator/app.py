@@ -41,8 +41,9 @@ class Application:
 
         self.centers, self.stds, self.jumps = utils.load_generation_params(self.config)
         self.generator = tasks.Generator(self.centers, self.stds, self.jumps)
+        self.writer = tasks.MonitorCSVWriter(self.config["program"]["monitor_file"])
 
-
+                                             
     def run(self):
         """ Start the workflow. """
         with Flow("DataGenerator", schedule=self.schedule) as flow:
@@ -50,6 +51,7 @@ class Application:
                 n_samples=self.config["generator"]["n_samples"]
             )
             tasks.save_batch(self.config["program"]["output_dir"], features, labels)
+            self.writer.run(features, labels)
             flow.run()
 
 
