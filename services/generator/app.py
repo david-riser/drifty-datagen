@@ -40,8 +40,10 @@ class Application:
         )
 
         self.centers, self.stds, self.jumps = utils.load_generation_params(self.config)
-        self.generator = tasks.Generator(self.centers, self.stds, self.jumps)
-        self.writer = tasks.MonitorCSVWriter(self.config["program"]["monitor_file"])
+        self.generator = tasks.Generator(self.centers, self.stds,
+                                         self.jumps, name="generator")
+        self.writer = tasks.MonitorCSVWriter(self.config["program"]["monitor_file"],
+                                             name="writer")
 
                                              
     def run(self):

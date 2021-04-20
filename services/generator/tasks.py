@@ -53,12 +53,12 @@ class Generator(Task):
     defined by the jumps variable.
 
     """
-    def __init__(self, centers, stds, jumps):
+    def __init__(self, centers, stds, jumps, **kwargs):
         self.centers = centers
         self.stds = stds
         self.jumps = jumps
         self.n_classes, self.n_features = self.centers.shape
-
+        super().__init__(**kwargs)
 
     def run(self, n_samples):
         """
@@ -99,9 +99,9 @@ class Generator(Task):
 class MonitorCSVWriter(Task):
     """ Class to write a monitoring CSV file each time the
     task graph is executed. """
-    def __init__(self, output_filename):
+    def __init__(self, output_filename, **kwargs):
         self.output_filename = output_filename
-
+        super().__init__(**kwargs)
 
     def run(self, features, labels):
         """ Calculate some aggregate statistics and then
@@ -127,6 +127,8 @@ class MonitorCSVWriter(Task):
 
         dataframe = pd.DataFrame([data,])
 
+        # Doesn't write out everytime the task
+        # runs for some reason.
         out_path = Path(self.output_filename)
         if not out_path.exists():
             dataframe.to_csv(self.output_filename, index=False)

@@ -8,8 +8,8 @@ generator:
     std_y1: 0.25
     std_x2: 0.25
     std_y2: 0.25
-    jump_x1: 0.1
-    jump_y1: 0.1
+    jump_x1: 0.02
+    jump_y1: 0.02
     jump_x2: 0.1
     jump_y2: 0.1
 program:
